@@ -1,0 +1,44 @@
+
+def dijkstra(start_node):
+    pq = [(0, start_node)]  # (누적거리, 노드번호)
+    dists = [inf] * V       # 각 정점까지의 최단거리 저장 리스트
+    dists[start_node] = 0    #시작노드 최단거리는 0
+
+    while pq:
+        dist, node = heapq.heappop(pq)
+
+        # 이미 더 작은 경로로 온 적이 있다면 pass
+        # 예제 그림 : c로 가는 경로가 3 or 4
+        if dists[node] < dist:
+            continue
+
+        for next_info in graph[node]:
+            next_weight = next_info[0]  # 다음 노드로 가기 위한 가중치
+            next_node = next_info       # 다음 노드 번호
+
+            # 다음 노드로 가기 위한 누적 거리
+            new_dist = dist + next_dist
+
+            # 이미 같은 가중치거나, 더작은 가중치로 온 적이 있다면 continue
+            if dists[next_node] <= new_dist:
+                continue
+                # next 노드까지 도착하는 데 비용은 new_dist
+            dists[next_node] = new_dist
+            heapq.heappush(pq, (new_dist, next_node))
+
+
+import heapq
+
+inf = int(21e8) #21억 ( 무한대를 의미)
+
+V, E = map(int, input().split())    #노드수, 간선수
+start_node = 0  #문제에 따라 다름
+graph = [[] for _ in range(V)]
+
+for _ in range(E):
+    u, v, W = map(int, input().split())
+    graph[u].append((w, v))
+
+result_dists = dijkstra(0)
+print(result_dists)
+
